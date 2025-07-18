@@ -1419,44 +1419,44 @@ async function exportRouteSummary() {
 //   }
 // });
 
-//   for (const entry of routeData) {
-//     if (entry.type === "location") {
-//       pathCoords.push([entry.coords.lat, entry.coords.lng]);
-//       enriched.push({ ...entry }); // clone for later enrichment
-//     } else if (entry.type === "text") {
-//       notesFolder.file(`note${noteCounter}.txt`, entry.content);
-//       markersJS += `
-// L.marker([${entry.coords.lat}, ${entry.coords.lng}], {
-//   icon: L.divIcon({ className: 'custom-icon', html: '📝', iconSize: [24, 24] })
-// })
-//   .addTo(map)
-//   .bindTooltip("Note ${noteCounter}")
-//   .bindPopup("<b>Note ${noteCounter}</b><br><pre>${entry.content}</pre>");
-// `;
-//       noteCounter++;
-//     } else if (entry.type === "photo") {
-//       const base64Data = entry.content.split(",")[1];
-//       imagesFolder.file(`photo${photoCounter}.jpg`, base64Data, { base64: true });
-//       markersJS += `
-// L.marker([${entry.coords.lat}, ${entry.coords.lng}], {
-//   icon: L.divIcon({ className: 'custom-icon', html: '📸', iconSize: [24, 24] })
-// })
-//   .addTo(map)
-//   .bindTooltip("Photo ${photoCounter}")
-//   .bindPopup("<b>Photo ${photoCounter}</b><br><img src='images/photo${photoCounter}.jpg' style='width:200px'>");
-// `;
-//       photoCounter++;
-//     } else if (entry.type === "audio") {
-//       const base64Data = entry.content.split(",")[1];
-//       audioFolder.file(`audio${audioCounter}.webm`, base64Data, { base64: true });
-//       markersJS += `
-// L.marker([${entry.coords.lat}, ${entry.coords.lng}])
-//   .addTo(map)
-//   .bindPopup("<b>Audio ${audioCounter}</b><br><audio controls src='audio/audio${audioCounter}.webm'></audio>");
-// `;
-//       audioCounter++;
-//     }
-//   }
+  for (const entry of routeData) {
+    if (entry.type === "location") {
+      pathCoords.push([entry.coords.lat, entry.coords.lng]);
+      enriched.push({ ...entry }); // clone for later enrichment
+    } else if (entry.type === "text") {
+      notesFolder.file(`note${noteCounter}.txt`, entry.content);
+      markersJS += `
+L.marker([${entry.coords.lat}, ${entry.coords.lng}], {
+  icon: L.divIcon({ className: 'custom-icon', html: '📝', iconSize: [24, 24] })
+})
+  .addTo(map)
+  .bindTooltip("Note ${noteCounter}")
+  .bindPopup("<b>Note ${noteCounter}</b><br><pre>${entry.content}</pre>");
+`;
+      noteCounter++;
+    } else if (entry.type === "photo") {
+      const base64Data = entry.content.split(",")[1];
+      imagesFolder.file(`photo${photoCounter}.jpg`, base64Data, { base64: true });
+      markersJS += `
+L.marker([${entry.coords.lat}, ${entry.coords.lng}], {
+  icon: L.divIcon({ className: 'custom-icon', html: '📸', iconSize: [24, 24] })
+})
+  .addTo(map)
+  .bindTooltip("Photo ${photoCounter}")
+  .bindPopup("<b>Photo ${photoCounter}</b><br><img src='images/photo${photoCounter}.jpg' style='width:200px'>");
+`;
+      photoCounter++;
+    } else if (entry.type === "audio") {
+      const base64Data = entry.content.split(",")[1];
+      audioFolder.file(`audio${audioCounter}.webm`, base64Data, { base64: true });
+      markersJS += `
+L.marker([${entry.coords.lat}, ${entry.coords.lng}])
+  .addTo(map)
+  .bindPopup("<b>Audio ${audioCounter}</b><br><audio controls src='audio/audio${audioCounter}.webm'></audio>");
+`;
+      audioCounter++;
+    }
+  }
 
   // Enrich with elevation
   for (const entry of enriched) {
@@ -1663,6 +1663,7 @@ const boundsVar = JSON.stringify(pathCoords.length ? [pathCoords[0], pathCoords[
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> -->
 
     <script>
+    window.addEventListener("DOMContentLoaded", () => {
 var map = L.map('map');
 var bounds = L.latLngBounds(${boundsVar});
 map.fitBounds(bounds);
@@ -1707,50 +1708,14 @@ new Chart(document.getElementById("chart"), {
     }]
   }
 });
+});
 </script>
 
   </body>
 </html>
 `;
 
-    for (const entry of routeData) {
-    if (entry.type === "location") {
-      pathCoords.push([entry.coords.lat, entry.coords.lng]);
-      enriched.push({ ...entry }); // clone for later enrichment
-    } else if (entry.type === "text") {
-      notesFolder.file(`note${noteCounter}.txt`, entry.content);
-      markersJS += `
-L.marker([${entry.coords.lat}, ${entry.coords.lng}], {
-  icon: L.divIcon({ className: 'custom-icon', html: '📝', iconSize: [24, 24] })
-})
-  .addTo(map)
-  .bindTooltip("Note ${noteCounter}")
-  .bindPopup("<b>Note ${noteCounter}</b><br><pre>${entry.content}</pre>");
-`;
-      noteCounter++;
-    } else if (entry.type === "photo") {
-      const base64Data = entry.content.split(",")[1];
-      imagesFolder.file(`photo${photoCounter}.jpg`, base64Data, { base64: true });
-      markersJS += `
-L.marker([${entry.coords.lat}, ${entry.coords.lng}], {
-  icon: L.divIcon({ className: 'custom-icon', html: '📸', iconSize: [24, 24] })
-})
-  .addTo(map)
-  .bindTooltip("Photo ${photoCounter}")
-  .bindPopup("<b>Photo ${photoCounter}</b><br><img src='images/photo${photoCounter}.jpg' style='width:200px'>");
-`;
-      photoCounter++;
-    } else if (entry.type === "audio") {
-      const base64Data = entry.content.split(",")[1];
-      audioFolder.file(`audio${audioCounter}.webm`, base64Data, { base64: true });
-      markersJS += `
-L.marker([${entry.coords.lat}, ${entry.coords.lng}])
-  .addTo(map)
-  .bindPopup("<b>Audio ${audioCounter}</b><br><audio controls src='audio/audio${audioCounter}.webm'></audio>");
-`;
-      audioCounter++;
-    }
-  }
+    
 // Photos and notes
 routeData.forEach((entry, i) => {
   if (entry.type === "photo") {
