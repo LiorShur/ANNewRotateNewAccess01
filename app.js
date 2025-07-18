@@ -1692,6 +1692,8 @@ for (let i = 1; i < route.length; i++) {
   L.polyline([a.coords, b.coords], { color }).addTo(map);
 }
 
+${markersJS}
+
 new Chart(document.getElementById("chart"), {
   type: "line",
   data: {
