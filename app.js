@@ -1545,6 +1545,20 @@ const boundsVar = JSON.stringify(pathCoords.length ? [pathCoords[0], pathCoords[
     .tab-content { display: none; }
     .tab-content.active { display: block; margin-top: 20px; }
     .map-and-chart { display: flex;  flex-direction: column;  gap: 20px;}
+    .map {
+  height: 300px;
+  width: 100%;
+  margin-bottom: 20px;
+  z-index: 1;
+  position: relative;
+}
+
+.chart {
+  display: block;
+  margin-top: 20px;
+  z-index: 0;
+  position: relative;
+}
   </style>
 </head>
 <body>
@@ -1577,8 +1591,8 @@ const boundsVar = JSON.stringify(pathCoords.length ? [pathCoords[0], pathCoords[
     <div class="tab-content active" id="map">
       <h3>🗺️ תצוגת מסלול</h3>
 <div class="map-and-chart">
-  <div id="map" style="height: 400px;"></div>
-  <canvas id="chart" height="200"></canvas>
+  <div id="map" class="map"></div>
+  <canvas id="chart" class="chart"></canvas>
 </div>
       <div class="legend">
         <b>מקרא שיפועים:</b><br>
