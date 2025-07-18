@@ -1576,8 +1576,6 @@ const boundsVar = JSON.stringify(pathCoords.length ? [pathCoords[0], pathCoords[
 
     <div class="tab-content active" id="map">
       <h3>🗺️ תצוגת מסלול</h3>
-      <--! <div id="map" style="height: 400px;"></div>
-      <canvas id="chart" height="200"></canvas>  -->
 <div class="map-and-chart">
   <div id="map" style="height: 400px;"></div>
   <canvas id="chart" height="200"></canvas>
