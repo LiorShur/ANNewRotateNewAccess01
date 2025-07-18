@@ -1397,27 +1397,27 @@ async function exportRouteSummary() {
   let photoCounter = 0;
   let audioCounter = 0;
 
-routeData.forEach((entry, i) => {
-  if (entry.type === "photo") {
-    photoCounter++;
-    const base64 = entry.content?.split(",")[1];
-    if (base64 && base64.length > 100) {
-      mediaForArchive[`photo${photoCounter}.jpg`] = { content: base64, isBase64: true };
-    }
-  } else if (entry.type === "text") {
-    noteCounter++;
-    if (entry.content?.trim()) {
-      mediaForArchive[`note${noteCounter}.txt`] = { content: entry.content, isBase64: false };
-    }
-  } else if (entry.type === "audio") {
-    audioCounter++;
-    // Add audio if applicable
-  } else if (entry.type === "location") {
-    const { lat, lng, elevation } = entry;
-    pathCoords.push([lat, lng]);
-    enriched.push({ coords: { lat, lng }, elevation: elevation ?? 0 });
-  }
-});
+// routeData.forEach((entry, i) => {
+//   if (entry.type === "photo") {
+//     photoCounter++;
+//     const base64 = entry.content?.split(",")[1];
+//     if (base64 && base64.length > 100) {
+//       mediaForArchive[`photo${photoCounter}.jpg`] = { content: base64, isBase64: true };
+//     }
+//   } else if (entry.type === "text") {
+//     noteCounter++;
+//     if (entry.content?.trim()) {
+//       mediaForArchive[`note${noteCounter}.txt`] = { content: entry.content, isBase64: false };
+//     }
+//   } else if (entry.type === "audio") {
+//     audioCounter++;
+//     // Add audio if applicable
+//   } else if (entry.type === "location") {
+//     const { lat, lng, elevation } = entry;
+//     pathCoords.push([lat, lng]);
+//     enriched.push({ coords: { lat, lng }, elevation: elevation ?? 0 });
+//   }
+// });
 
 //   for (const entry of routeData) {
 //     if (entry.type === "location") {
@@ -1713,6 +1713,44 @@ new Chart(document.getElementById("chart"), {
 </html>
 `;
 
+    for (const entry of routeData) {
+    if (entry.type === "location") {
+      pathCoords.push([entry.coords.lat, entry.coords.lng]);
+      enriched.push({ ...entry }); // clone for later enrichment
+    } else if (entry.type === "text") {
+      notesFolder.file(`note${noteCounter}.txt`, entry.content);
+      markersJS += `
+L.marker([${entry.coords.lat}, ${entry.coords.lng}], {
+  icon: L.divIcon({ className: 'custom-icon', html: '📝', iconSize: [24, 24] })
+})
+  .addTo(map)
+  .bindTooltip("Note ${noteCounter}")
+  .bindPopup("<b>Note ${noteCounter}</b><br><pre>${entry.content}</pre>");
+`;
+      noteCounter++;
+    } else if (entry.type === "photo") {
+      const base64Data = entry.content.split(",")[1];
+      imagesFolder.file(`photo${photoCounter}.jpg`, base64Data, { base64: true });
+      markersJS += `
+L.marker([${entry.coords.lat}, ${entry.coords.lng}], {
+  icon: L.divIcon({ className: 'custom-icon', html: '📸', iconSize: [24, 24] })
+})
+  .addTo(map)
+  .bindTooltip("Photo ${photoCounter}")
+  .bindPopup("<b>Photo ${photoCounter}</b><br><img src='images/photo${photoCounter}.jpg' style='width:200px'>");
+`;
+      photoCounter++;
+    } else if (entry.type === "audio") {
+      const base64Data = entry.content.split(",")[1];
+      audioFolder.file(`audio${audioCounter}.webm`, base64Data, { base64: true });
+      markersJS += `
+L.marker([${entry.coords.lat}, ${entry.coords.lng}])
+  .addTo(map)
+  .bindPopup("<b>Audio ${audioCounter}</b><br><audio controls src='audio/audio${audioCounter}.webm'></audio>");
+`;
+      audioCounter++;
+    }
+  }
 // Photos and notes
 routeData.forEach((entry, i) => {
   if (entry.type === "photo") {
