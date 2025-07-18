@@ -1544,6 +1544,7 @@ const boundsVar = JSON.stringify(pathCoords.length ? [pathCoords[0], pathCoords[
     .tab-bar { display: flex; gap: 10px; flex-wrap: wrap; }
     .tab-content { display: none; }
     .tab-content.active { display: block; margin-top: 20px; }
+    .map-and-chart { display: flex;  flex-direction: column;  gap: 20px;}
   </style>
 </head>
 <body>
@@ -1575,8 +1576,12 @@ const boundsVar = JSON.stringify(pathCoords.length ? [pathCoords[0], pathCoords[
 
     <div class="tab-content active" id="map">
       <h3>🗺️ תצוגת מסלול</h3>
-      <div id="map" style="height: 400px;"></div>
-      <canvas id="chart" height="200"></canvas>
+      <--! <div id="map" style="height: 400px;"></div>
+      <canvas id="chart" height="200"></canvas>  -->
+<div class="map-and-chart">
+  <div id="map" style="height: 400px;"></div>
+  <canvas id="chart" height="200"></canvas>
+</div>
       <div class="legend">
         <b>מקרא שיפועים:</b><br>
         <span style="color:green">🟩 ≤ 6% (קל)</span>
@@ -1657,11 +1662,6 @@ const boundsVar = JSON.stringify(pathCoords.length ? [pathCoords[0], pathCoords[
 
       
     </script>
-
-   <--! <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> -->
-
     <script>
     window.addEventListener("DOMContentLoaded", () => {
 var map = L.map('map');
