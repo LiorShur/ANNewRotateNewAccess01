@@ -1291,30 +1291,6 @@ const SummaryArchive = (() => {
   };
 })();
 
-// function generateAccessibilityHTML(accessibilityData) {
-//   if (!accessibilityData) return "";
-// console.log(accessibilityData);
-//   return `
-//     <div id="accessibilityDetails">
-//       <h3>♿ Accessibility Details</h3>
-//       <ul>
-//         <li><b>Disabled Parking:</b> ${.disabledParkingCount || "N/A"}</li>
-//         <li><b>Path Type:</b> ${.pathType || "N/A"}</li>
-//         <li><b>Accessible Length:</b> ${.accessibleLength || "N/A"} m</li>
-//         <li><b>Route Type:</b> ${.routeType || "N/A"}</li>
-//         <li><b>Slope:</b> ${.slope || "N/A"}</li>
-//         <li><b>Points of Interest:</b> ${.pointsOfInterest || "N/A"}</li>
-//         <li><b>Lookouts:</b> ${.lookouts ? "Yes" : "No"}</li>
-//         <li><b>Picnic Spots:</b> ${.picnicSpots ? "Yes" : "No"}</li>
-//         <li><b>Accessible Toilets:</b> ${.accessibleToilets ? "Yes" : "No"}</li>
-//         <li><b>Benches:</b> ${.benches ? "Yes" : "No"}</li>
-//         <li><b>Shade:</b> ${.shade || "N/A"}</li>
-//       </ul>
-//     </div>
-//   `;
-// }
-
-
 function haversineDistance(a, b) {
   const toRad = deg => deg * Math.PI / 180;
   const R = 6371;
@@ -1361,9 +1337,9 @@ async function generateElevationChartCanvas(route) {
       }]
     });
   });
-
   return canvas;
 }
+
 
 async function exportRouteSummary() {
 
@@ -1393,31 +1369,10 @@ async function exportRouteSummary() {
   let pathCoords = [];
   let enriched = [];
 
-  let noteCounter = 0;
-  let photoCounter = 0;
-  let audioCounter = 0;
+  let noteCounter = 1;
+  let photoCounter = 1;
+  let audioCounter = 1;
 
-// routeData.forEach((entry, i) => {
-//   if (entry.type === "photo") {
-//     photoCounter++;
-//     const base64 = entry.content?.split(",")[1];
-//     if (base64 && base64.length > 100) {
-//       mediaForArchive[`photo${photoCounter}.jpg`] = { content: base64, isBase64: true };
-//     }
-//   } else if (entry.type === "text") {
-//     noteCounter++;
-//     if (entry.content?.trim()) {
-//       mediaForArchive[`note${noteCounter}.txt`] = { content: entry.content, isBase64: false };
-//     }
-//   } else if (entry.type === "audio") {
-//     audioCounter++;
-//     // Add audio if applicable
-//   } else if (entry.type === "location") {
-//     const { lat, lng, elevation } = entry;
-//     pathCoords.push([lat, lng]);
-//     enriched.push({ coords: { lat, lng }, elevation: elevation ?? 0 });
-//   }
-// });
 
   for (const entry of routeData) {
     if (entry.type === "location") {
@@ -1591,7 +1546,7 @@ const boundsVar = JSON.stringify(pathCoords.length ? [pathCoords[0], pathCoords[
     <div class="tab-content active" id="map">
       <h3>🗺️ תצוגת מסלול</h3>
 <div class="map-and-chart">
-  <div id="exportHtmlMap" class="map"></div>
+  <div id="exportHtmlMap" class="exportHtmlmap"></div>
   <canvas id="chart" class="exportHtmlChart"></canvas>
 </div>
       <div class="legend">
