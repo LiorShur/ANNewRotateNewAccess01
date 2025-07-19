@@ -1509,6 +1509,8 @@ const boundsVar = JSON.stringify(pathCoords.length ? [pathCoords[0], pathCoords[
 }
 
 .exportHtmlChart {
+  height: 150px;
+  width: 100%;
   display: block;
   margin-top: 20px;
   z-index: 0;
